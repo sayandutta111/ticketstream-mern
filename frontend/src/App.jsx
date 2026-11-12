@@ -114,10 +114,6 @@ export default function App() {
             <span>{isDBConnected ? 'MongoDB Connected' : 'In-Memory Fallback'}</span>
           </div>
 
-          <button className="btn-secondary" onClick={loadStats} title="Refresh System Status">
-            <RefreshCw size={14} /> Refresh
-          </button>
-
           <button className="btn-danger" onClick={handleClearData} title="Purge all records for fresh benchmark">
             <Trash2 size={14} /> Clear Records
           </button>
