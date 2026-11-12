@@ -256,8 +256,10 @@ async function processCSVFile(filePath, options = {}) {
           message: `Successfully processed ${totalProcessed.toLocaleString()} tickets in ${totalDurationSec}s!`
         });
 
-        // Clean up uploaded temporary file
-        fs.unlink(filePath, () => {});
+        // Clean up uploaded temporary file (only if uploaded to temp uploads directory)
+        if (filePath.includes('uploads') || filePath.includes('tmp')) {
+          fs.unlink(filePath, () => {});
+        }
 
         resolve(summary);
       } catch (err) {
@@ -285,3 +287,4 @@ module.exports = {
   getFallbackStore,
   normalizeRow
 };
+

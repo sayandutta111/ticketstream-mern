@@ -106,13 +106,38 @@ router.post('/', upload.single('csvFile'), async (req, res) => {
  */
 router.post('/process-path', async (req, res) => {
   const { filePath } = req.body;
-  if (!filePath || !fs.existsSync(filePath)) {
-    return res.status(400).json({ success: false, error: 'File path does not exist on server.' });
+  if (!filePath) {
+    return res.status(400).json({ success: false, error: 'File path is required.' });
+  }
+
+  // Resolve file path across project directory structures
+  const candidatePaths = [
+    filePath,
+    path.resolve(process.cwd(), filePath),
+    path.resolve(__dirname, '../..', filePath),
+    path.resolve(__dirname, '../..', 'data', path.basename(filePath)),
+    path.resolve(process.cwd(), 'data', path.basename(filePath)),
+    path.resolve(process.cwd(), '..', 'data', path.basename(filePath))
+  ];
+
+  let resolvedPath = null;
+  for (const p of candidatePaths) {
+    if (fs.existsSync(p)) {
+      resolvedPath = p;
+      break;
+    }
+  }
+
+  if (!resolvedPath) {
+    return res.status(400).json({
+      success: false,
+      error: `File path does not exist on server: ${filePath}`
+    });
   }
 
   try {
-    console.log(`[Upload] Processing direct path: ${filePath}`);
-    const summary = await processCSVFile(filePath);
+    console.log(`[Upload] Processing direct path: ${resolvedPath}`);
+    const summary = await processCSVFile(resolvedPath);
     res.json({
       success: true,
       message: `Direct path processed successfully!`,
@@ -124,3 +149,4 @@ router.post('/process-path', async (req, res) => {
 });
 
 module.exports = router;
+
