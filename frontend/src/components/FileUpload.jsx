@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, FileText, CheckCircle, AlertTriangle, Play, RefreshCw, Cpu } from 'lucide-react';
+import { UploadCloud, FileText, CheckCircle, AlertTriangle, Play, RefreshCw, Cpu, Zap } from 'lucide-react';
 import { uploadCSV, processServerFile } from '../services/api';
 
 export default function FileUpload({ onImportCompleted, liveProgress }) {
@@ -264,3 +264,4 @@ export default function FileUpload({ onImportCompleted, liveProgress }) {
     </div>
   );
 }
+
