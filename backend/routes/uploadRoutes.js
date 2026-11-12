@@ -1,0 +1,126 @@
+/**
+ * Upload & Streaming Ingestion Routes
+ * Handles multipart file uploads, Server-Sent Events progress, and batch processing
+ */
+
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const { processCSVFile } = require('../services/csvProcessor');
+const sseService = require('../services/sseService');
+
+// Ensure uploads folder exists
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, `tickets-${uniqueSuffix}.csv`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 500 * 1024 * 1024 // Allow up to 500MB CSV files
+  },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (ext === '.csv' || file.mimetype === 'text/csv' || file.mimetype === 'application/vnd.ms-excel') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only .csv files are supported.'));
+    }
+  }
+});
+
+/**
+ * GET /api/upload/events
+ * Real-time Server-Sent Events stream for live progress tracking
+ */
+router.get('/events', (req, res) => {
+  sseService.addClient(res);
+});
+
+/**
+ * GET /api/upload/progress
+ * JSON polling fallback for progress
+ */
+router.get('/progress', (req, res) => {
+  res.json({
+    success: true,
+    progress: sseService.getProgress()
+  });
+});
+
+/**
+ * POST /api/upload
+ * Primary endpoint for uploading and streaming CSV records
+ */
+router.post('/', upload.single('csvFile'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'No CSV file uploaded.' });
+  }
+
+  const filePath = req.file.path;
+  const originalName = req.file.originalname;
+
+  try {
+    console.log(`[Upload] Received CSV file: ${originalName} (${(req.file.size / 1024 / 1024).toFixed(2)} MB)`);
+
+    // Asynchronously begin streaming processing
+    // We respond immediately or await depending on client preference,
+    // but returning promise resolution ensures full audit report
+    const summary = await processCSVFile(filePath);
+
+    res.json({
+      success: true,
+      message: `File "${originalName}" successfully processed!`,
+      summary
+    });
+  } catch (error) {
+    console.error('[Upload] Error processing CSV:', error);
+    // Cleanup on error
+    if (fs.existsSync(filePath)) {
+      fs.unlink(filePath, () => {});
+    }
+    res.status(500).json({
+      success: false,
+      error: `Processing error: ${error.message}`
+    });
+  }
+});
+
+/**
+ * POST /api/upload/process-path
+ * Process a file already present on the local filesystem (useful for 800,000 CLI generated files)
+ */
+router.post('/process-path', async (req, res) => {
+  const { filePath } = req.body;
+  if (!filePath || !fs.existsSync(filePath)) {
+    return res.status(400).json({ success: false, error: 'File path does not exist on server.' });
+  }
+
+  try {
+    console.log(`[Upload] Processing direct path: ${filePath}`);
+    const summary = await processCSVFile(filePath);
+    res.json({
+      success: true,
+      message: `Direct path processed successfully!`,
+      summary
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+module.exports = router;

@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Production build
+frontend/dist/
+
+# Uploads & Temp files
+backend/uploads/
+*.log
+
+# Environment variables
+.env
+backend/.env
+
+# Large dataset generated files (reproducible via npm run generate-csv)
+data/tickets_800k.csv
+
+# OS metadata
+.DS_Store
+Thumbs.db

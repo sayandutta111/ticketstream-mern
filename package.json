@@ -1,0 +1,26 @@
+{
+  "name": "mern-ticket-processing-system",
+  "version": "1.0.0",
+  "description": "High-performance MERN Stack application processing 800,000 ticket records with unique code generation and custom sequence sorting",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "node backend/server.js",
+    "client": "npm --prefix frontend run dev",
+    "dev": "node scripts/run-dev.js",
+    "generate-csv": "node scripts/generate-csv.js",
+    "test-sequence": "node backend/utils/sequenceValidator.js"
+  },
+  "keywords": [
+    "mern",
+    "mongodb",
+    "express",
+    "react",
+    "node",
+    "streaming",
+    "csv-import",
+    "performance"
+  ],
+  "author": "",
+  "license": "MIT"
+}
