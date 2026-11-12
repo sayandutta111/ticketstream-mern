@@ -41,7 +41,12 @@ export default function TicketTable({ refreshTrigger }) {
 
   useEffect(() => {
     loadData();
-  }, [page, limit, priority, status, order, refreshTrigger]);
+  }, [page, limit, priority, status, order]);
+
+  useEffect(() => {
+    setPage(1);
+    loadData();
+  }, [refreshTrigger]);
 
   // Handle debounced search
   useEffect(() => {

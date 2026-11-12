@@ -46,7 +46,17 @@ export default function App() {
     return () => {
       unsubscribe();
     };
-  }, [refreshTrigger]);
+  }, []); // Run once on mount
+
+  // Auto-refresh stats periodically during ingestion
+  useEffect(() => {
+    if (liveProgress && (liveProgress.phase === 'inserting_db' || liveProgress.phase === 'parsing')) {
+      const interval = setInterval(() => {
+        loadStats();
+      }, 2500);
+      return () => clearInterval(interval);
+    }
+  }, [liveProgress?.phase]);
 
   const handleImportCompleted = (summary) => {
     setLastBenchmark(summary);
@@ -58,13 +68,25 @@ export default function App() {
     if (!window.confirm('Are you sure you want to clear all tickets from the database?')) {
       return;
     }
+    // Instantly reset UI state optimistically
+    setStats((prev) => ({
+      ...prev,
+      totalTickets: 0,
+      priorityCounts: {},
+      statusCounts: {},
+      sequencePreview: []
+    }));
+    setLiveProgress(null);
+    setLastBenchmark(null);
+    setRefreshTrigger((prev) => prev + 1);
+
     try {
       await clearDatabase();
-      loadStats();
+      await loadStats();
       setRefreshTrigger((prev) => prev + 1);
-      setLiveProgress(null);
     } catch (err) {
       alert(`Clear failed: ${err.message}`);
+      loadStats();
     }
   };
 

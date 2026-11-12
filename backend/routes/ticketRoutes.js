@@ -197,7 +197,7 @@ router.get('/stats', async (req, res) => {
 
 /**
  * DELETE /api/tickets/clear
- * Purges tickets collection (useful for fresh benchmark test runs)
+ * Purges tickets collection instantly via dropCollection (O(1)) and recreates indexes
  */
 router.delete('/clear', async (req, res) => {
   try {
@@ -205,13 +205,28 @@ router.delete('/clear', async (req, res) => {
     let deletedCount = 0;
 
     if (dbStatus.connected) {
-      const result = await Ticket.deleteMany({});
-      deletedCount = result.deletedCount;
+      try {
+        deletedCount = await Ticket.estimatedDocumentCount();
+        await Ticket.collection.drop();
+      } catch (dropErr) {
+        // If collection doesn't exist (NamespaceNotFound code 26), ignore
+        if (dropErr.code !== 26) {
+          const delRes = await Ticket.deleteMany({});
+          deletedCount = delRes.deletedCount;
+        }
+      }
+      // Re-create collection and indexes immediately for next ingestion
+      await Ticket.createCollection();
+      await Ticket.syncIndexes();
     } else {
       const fallback = getFallbackStore();
       deletedCount = fallback.tickets.length;
       fallback.tickets = [];
     }
+
+    // Reset SSE progress
+    const sseService = require('../services/sseService');
+    sseService.reset();
 
     res.json({
       success: true,
@@ -219,6 +234,7 @@ router.delete('/clear', async (req, res) => {
       deletedCount
     });
   } catch (error) {
+    console.error('[Ticket API] Clear error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
