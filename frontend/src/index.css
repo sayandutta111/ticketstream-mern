@@ -728,6 +728,29 @@ input, select {
   color: var(--accent-cyan);
 }
 
+.developer-card-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.developer-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  flex-shrink: 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.developer-avatar:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.7);
+}
+
 .developer-info-grid {
   display: flex;
   flex-wrap: wrap;
