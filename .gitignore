@@ -16,6 +16,7 @@ backend/.env
 
 # Large dataset generated files (reproducible via npm run generate-csv)
 data/tickets_800k.csv
+backend/data/tickets_800k.csv
 
 # OS metadata
 .DS_Store

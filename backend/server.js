@@ -6,6 +6,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const dotenv = require('dotenv');
 
 // Load environment variables
@@ -45,6 +46,18 @@ app.get('/api/health', (req, res) => {
 // API Routes
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/upload', uploadRoutes);
+
+// Serve Frontend in Production / Unified Deployment
+const frontendDist = path.resolve(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.resolve(frontendDist, 'index.html'));
+  });
+}
 
 // Global Error Handler
 app.use((err, req, res, next) => {
