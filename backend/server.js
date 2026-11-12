@@ -72,7 +72,7 @@ app.use((err, req, res, next) => {
 async function startServer() {
   await connectDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`=================================================`);
     console.log(`  Ticket Management Backend running on port ${PORT}`);
     console.log(`  Health Check: http://localhost:${PORT}/api/health`);
