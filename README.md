@@ -262,3 +262,4 @@ Open your browser to: **`http://localhost:3000`**
 - **Frontend Framework**: React.js (Vite)
 - **UI & Icons**: Lucide React
 - **Language**: 100% Pure JavaScript (ES6+ / JSX) — No TypeScript
+

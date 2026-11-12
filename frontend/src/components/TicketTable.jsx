@@ -255,3 +255,4 @@ export default function TicketTable({ refreshTrigger }) {
     </div>
   );
 }
+

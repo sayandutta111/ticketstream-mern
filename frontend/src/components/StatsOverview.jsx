@@ -60,3 +60,4 @@ export default function StatsOverview({ stats, lastBenchmark }) {
     </div>
   );
 }
+

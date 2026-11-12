@@ -155,5 +155,44 @@ router.post('/process-path', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/upload/preset/:type
+ * Instant preset processing (1k, 10k, 800k) with automatic generation fallback
+ */
+router.post('/preset/:type', async (req, res) => {
+  const { type } = req.params;
+  const fileName = `tickets_${type}.csv`;
+
+  const searchLocations = [
+    path.join(__dirname, '../data', fileName),
+    path.join(__dirname, '../../data', fileName),
+    path.resolve(process.cwd(), 'data', fileName),
+    path.resolve(process.cwd(), '../data', fileName)
+  ];
+
+  let targetPath = searchLocations.find((p) => fs.existsSync(p));
+
+  try {
+    const count = type === '800k' ? 800000 : type === '10k' ? 10000 : 1000;
+
+    if (!targetPath) {
+      const dest = path.resolve(__dirname, '../../data', fileName);
+      const { generateCSV } = require('../../scripts/generate-csv');
+      targetPath = await generateCSV(count, dest);
+    }
+
+    console.log(`[Upload] Processing preset "${type}": ${targetPath}`);
+    const summary = await processCSVFile(targetPath, { estimatedTotal: count });
+    res.json({
+      success: true,
+      message: `Preset "${type}" processed successfully!`,
+      summary
+    });
+  } catch (error) {
+    console.error(`[Upload] Preset error for ${type}:`, error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;
 

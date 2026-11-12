@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { UploadCloud, FileText, CheckCircle, AlertTriangle, Play, RefreshCw, Cpu, Zap } from 'lucide-react';
-import { uploadCSV, processServerFile } from '../services/api';
+import { uploadCSV, processServerFile, processPreset } from '../services/api';
 
 export default function FileUpload({ onImportCompleted, liveProgress }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -65,14 +65,13 @@ export default function FileUpload({ onImportCompleted, liveProgress }) {
     }
   };
 
-  const handleProcessServerPreset = async (fileName, label) => {
+  const handleProcessServerPreset = async (presetType, label) => {
     setIsProcessing(true);
-    setStatusMessage({ type: 'info', text: `Streaming preset "${label}" into MongoDB...` });
+    setStatusMessage(null); // Clear any old errors immediately
     setSummary(null);
 
     try {
-      const fullPath = `data/${fileName}`;
-      const res = await processServerFile(fullPath);
+      const res = await processPreset(presetType);
       setIsProcessing(false);
       setSummary(res.summary);
       setStatusMessage({
@@ -84,7 +83,7 @@ export default function FileUpload({ onImportCompleted, liveProgress }) {
       setIsProcessing(false);
       setStatusMessage({
         type: 'error',
-        text: `Server preset processing failed: ${err.response?.data?.error || err.message}`
+        text: `Preset error: ${err.response?.data?.error || err.message}`
       });
     }
   };
@@ -240,14 +239,14 @@ export default function FileUpload({ onImportCompleted, liveProgress }) {
           <button
             className="btn-secondary"
             disabled={isProcessing}
-            onClick={() => handleProcessServerPreset('tickets_1k.csv', '1,000 Records')}
+            onClick={() => handleProcessServerPreset('1k', '1,000 Records')}
           >
             <FileText size={14} /> 1,000 Rows (Sample)
           </button>
           <button
             className="btn-secondary"
             disabled={isProcessing}
-            onClick={() => handleProcessServerPreset('tickets_10k.csv', '10,000 Records')}
+            onClick={() => handleProcessServerPreset('10k', '10,000 Records')}
           >
             <FileText size={14} /> 10,000 Rows (Fast)
           </button>
@@ -255,7 +254,7 @@ export default function FileUpload({ onImportCompleted, liveProgress }) {
             className="btn-primary"
             style={{ backgroundColor: '#4f46e5' }}
             disabled={isProcessing}
-            onClick={() => handleProcessServerPreset('tickets_800k.csv', '800,000 Records')}
+            onClick={() => handleProcessServerPreset('800k', '800,000 Records')}
           >
             <Zap size={14} color="#38bdf8" /> Full 800,000 Records Stress Test
           </button>

@@ -49,6 +49,16 @@ export async function processServerFile(filePath) {
   return response.data;
 }
 
+export async function processPreset(presetType) {
+  try {
+    const response = await apiClient.post(`/upload/preset/${presetType}`);
+    return response.data;
+  } catch (err) {
+    // Fallback to process-path
+    return processServerFile(`data/tickets_${presetType}.csv`);
+  }
+}
+
 export function subscribeToProgress(onMessage, onError) {
   const eventSource = new EventSource(`${API_BASE}/upload/events`);
 
@@ -69,3 +79,4 @@ export function subscribeToProgress(onMessage, onError) {
     eventSource.close();
   };
 }
+

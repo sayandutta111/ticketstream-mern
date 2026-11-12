@@ -51,3 +51,4 @@ export default function SequenceExplainer({ sequencePreview = [] }) {
     </div>
   );
 }
+

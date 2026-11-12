@@ -11,7 +11,7 @@ console.log('  Starting MERN Ticket Processing Application...  ');
 console.log('==================================================\n');
 
 // Start Backend
-const backend = spawn('node', ['server.js'], {
+const backend = spawn('node', ['--watch', 'server.js'], {
   cwd: path.resolve(__dirname, '../backend'),
   stdio: 'inherit',
   shell: true
@@ -29,3 +29,4 @@ process.on('SIGINT', () => {
   frontend.kill('SIGINT');
   process.exit();
 });
+

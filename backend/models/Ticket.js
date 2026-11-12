@@ -76,3 +76,4 @@ ticketSchema.index({ importedAt: -1, sequenceIndex: 1 });
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
 module.exports = Ticket;
+
