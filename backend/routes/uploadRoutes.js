@@ -137,7 +137,14 @@ router.post('/process-path', async (req, res) => {
 
   try {
     console.log(`[Upload] Processing direct path: ${resolvedPath}`);
-    const summary = await processCSVFile(resolvedPath);
+
+    // Exact count hint for preset files
+    let estimatedTotal = undefined;
+    if (resolvedPath.includes('1k')) estimatedTotal = 1000;
+    else if (resolvedPath.includes('10k')) estimatedTotal = 10000;
+    else if (resolvedPath.includes('800k')) estimatedTotal = 800000;
+
+    const summary = await processCSVFile(resolvedPath, { estimatedTotal });
     res.json({
       success: true,
       message: `Direct path processed successfully!`,
