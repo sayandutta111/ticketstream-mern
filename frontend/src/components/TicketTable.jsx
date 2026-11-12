@@ -78,7 +78,7 @@ export default function TicketTable({ refreshTrigger }) {
 
         <div className="filter-group">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-secondary)' }}>
-            <Filter size={14} /> Priority:
+            <Filter size={14} /> 
           </div>
           <select
             className="select-filter"
