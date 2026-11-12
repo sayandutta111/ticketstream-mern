@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="ticketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#6366f1" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Modern App Icon Container -->
+  <rect width="64" height="64" rx="16" fill="url(#bgGrad)" stroke="#312e81" stroke-width="1.5" />
+
+  <!-- Stylized Ticket with Perforation Notches -->
+  <path d="M12 21C12 17.134 15.134 14 19 14H45C48.866 14 52 17.134 52 21V27.5C49.5147 27.5 47.5 29.5147 47.5 32C47.5 34.4853 49.5147 36.5 52 36.5V43C52 46.866 48.866 50 45 50H19C15.134 50 12 46.866 12 43V36.5C14.4853 36.5 16.5 34.4853 16.5 32C16.5 29.5147 14.4853 27.5 12 27.5V21Z" 
+        fill="url(#ticketGrad)" 
+        filter="url(#shadow)" />
+
+  <!-- Dotted Divider Line -->
+  <line x1="32" y1="18" x2="32" y2="46" stroke="#ffffff" stroke-width="2" stroke-dasharray="2.5 3.5" stroke-opacity="0.65" stroke-linecap="round" />
+
+  <!-- Left Accent (Code Indicator) -->
+  <rect x="20" y="29.5" width="5" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.95" />
+
+  <!-- Right Fast Arrow (Stream Indicator) -->
+  <path d="M39 27L44 32L39 37" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
