@@ -20,7 +20,7 @@ export default function SequenceExplainer({ sequencePreview = [] }) {
     <div className="explainer-box">
       <div className="explainer-title">
         <Info size={18} />
-        Requirement 3: Sequence Pattern & Sorting Logic
+        Sequence Pattern & Sorting Logic
       </div>
       <p style={{ fontSize: 13.5, color: 'var(--text-secondary)', marginBottom: 10 }}>
         The system assigns and sorts unique ticket codes following the prompt's required sequence pattern across 800,000 records.

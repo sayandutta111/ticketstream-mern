@@ -662,3 +662,131 @@ input, select {
   color: var(--text-muted);
 }
 
+/* Footer Styles */
+.app-footer {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-color);
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 24px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-main);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.footer-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.footer-developer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.developer-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.accent-icon {
+  color: var(--accent-cyan);
+}
+
+.developer-info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.dev-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dev-item.dev-link {
+  cursor: pointer;
+}
+
+.dev-item.dev-link:hover {
+  color: var(--text-main);
+  transform: translateY(-1px);
+}
+
+.dev-item.dev-link:hover .dev-val {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.dev-icon {
+  color: var(--text-muted);
+}
+
+.dev-item.dev-link:hover .dev-icon {
+  color: var(--primary);
+}
+
+.dev-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.dev-val {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.name-highlight {
+  color: #c7d2fe;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+

@@ -4,6 +4,7 @@ import StatsOverview from './components/StatsOverview';
 import FileUpload from './components/FileUpload';
 import TicketTable from './components/TicketTable';
 import SequenceExplainer from './components/SequenceExplainer';
+import Footer from './components/Footer';
 import { fetchStats, clearDatabase, subscribeToProgress } from './services/api';
 
 export default function App() {
@@ -149,6 +150,9 @@ export default function App() {
 
       {/* Paginated Tickets Table */}
       <TicketTable refreshTrigger={refreshTrigger} />
+
+      {/* Developer Footer */}
+      <Footer />
     </div>
   );
 }
