@@ -168,7 +168,7 @@ export default function TicketTable({ refreshTrigger }) {
                     </td>
                     <td style={{ fontWeight: 600 }}>{t.customerName}</td>
                     <td style={{ color: 'var(--text-secondary)' }}>{t.customerEmail}</td>
-                    <td style={{ maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <td style={{ maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis' }} title={t.subject}>
                       {t.subject}
                     </td>
                     <td>
