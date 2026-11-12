@@ -89,7 +89,11 @@ export default function FileUpload({ onImportCompleted, liveProgress }) {
   };
 
   // Determine active progress display
-  const progressPercent = liveProgress?.percentage || 0;
+  const progressPercent =
+    (liveProgress?.processed && liveProgress?.totalRecords && liveProgress.processed >= liveProgress.totalRecords) ||
+    liveProgress?.phase === 'completed'
+      ? 100
+      : (liveProgress?.percentage || 0);
   const isStreamingLive = liveProgress && liveProgress.phase && liveProgress.phase !== 'idle' && liveProgress.phase !== 'completed';
 
   return (

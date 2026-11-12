@@ -172,7 +172,9 @@ async function processCSVFile(filePath, options = {}) {
 
         const elapsedMs = Date.now() - startTime;
         const speed = Math.round((totalProcessed / Math.max(1, elapsedMs)) * 1000);
-        const percentage = Math.min(99, Math.round((totalProcessed / totalLinesEstimate) * 100));
+        const percentage = totalProcessed >= totalLinesEstimate
+          ? 100
+          : Math.min(99, Math.round((totalProcessed / totalLinesEstimate) * 100));
         const remainingRecords = Math.max(0, totalLinesEstimate - totalProcessed);
         const etaSeconds = speed > 0 ? Math.round(remainingRecords / speed) : 0;
 
