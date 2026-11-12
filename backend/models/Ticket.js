@@ -21,8 +21,7 @@ const ticketSchema = new mongoose.Schema(
     },
     originalTicketId: {
       type: String,
-      trim: true,
-      index: true
+      trim: true
     },
     customerName: {
       type: String,
@@ -32,47 +31,32 @@ const ticketSchema = new mongoose.Schema(
     customerEmail: {
       type: String,
       trim: true,
-      lowercase: true,
       default: ''
     },
     subject: {
       type: String,
       trim: true,
-      default: 'General Inquiry'
+      default: 'General'
     },
     priority: {
       type: String,
-      enum: ['Low', 'Medium', 'High', 'Urgent'],
-      default: 'Medium',
-      index: true
+      default: 'Medium'
     },
     status: {
       type: String,
-      enum: ['Open', 'In Progress', 'Resolved', 'Closed'],
-      default: 'Open',
-      index: true
-    },
-    metadata: {
-      type: mongoose.Schema.Types.Mixed,
-      default: {}
+      default: 'Open'
     },
     importedAt: {
       type: Date,
-      default: Date.now,
-      index: true
+      default: Date.now
     }
   },
   {
-    timestamps: true,
     versionKey: false
   }
 );
 
-// Compound indexes for common queries
-ticketSchema.index({ sequenceIndex: 1, ticketCode: 1 });
-ticketSchema.index({ priority: 1, status: 1 });
-ticketSchema.index({ importedAt: -1, sequenceIndex: 1 });
-
+// Only maintain primary unique & sequence indexes to stay well within free tier storage limits
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
 module.exports = Ticket;

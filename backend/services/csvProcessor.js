@@ -67,8 +67,7 @@ function normalizeRow(row) {
     customerEmail,
     subject,
     priority,
-    status,
-    metadata: row
+    status
   };
 }
 
