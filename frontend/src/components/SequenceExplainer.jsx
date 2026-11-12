@@ -3,17 +3,17 @@ import { ArrowRight, CheckCircle, Info } from 'lucide-react';
 
 export default function SequenceExplainer({ sequencePreview = [] }) {
   const promptTokens = [
-    { code: 'AA00000', label: 'Index 0' },
-    { code: 'AB00001', label: 'Index 1' },
-    { code: 'AC00002', label: 'Index 2' },
-    { code: 'AD00003', label: 'Index 3' },
-    { code: 'AE00004', label: 'Index 4' },
-    { code: 'AA00002', label: 'Index 5' },
-    { code: 'AB00002', label: 'Index 6' },
-    { code: 'AC00002A', label: 'Index 7 (Unique)' },
-    { code: 'AD00002', label: 'Index 8' },
-    { code: 'AE00002', label: 'Index 9' },
-    { code: 'AA00003', label: 'Index 10' }
+    { code: 'AA00000', label: 'Seq #1' },
+    { code: 'AB00001', label: 'Seq #2' },
+    { code: 'AC00002', label: 'Seq #3' },
+    { code: 'AD00003', label: 'Seq #4' },
+    { code: 'AE00004', label: 'Seq #5' },
+    { code: 'AA00002', label: 'Seq #6' },
+    { code: 'AB00002', label: 'Seq #7' },
+    { code: 'AC00002A', label: 'Seq #8 (Unique)' },
+    { code: 'AD00002', label: 'Seq #9' },
+    { code: 'AE00002', label: 'Seq #10' },
+    { code: 'AA00003', label: 'Seq #11' }
   ];
 
   return (

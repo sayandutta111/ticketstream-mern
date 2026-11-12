@@ -8,7 +8,7 @@ export default function TicketTable({ refreshTrigger }) {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState('');
   const [priority, setPriority] = useState('All');
   const [status, setStatus] = useState('All');
@@ -145,16 +145,17 @@ export default function TicketTable({ refreshTrigger }) {
                 </td>
               </tr>
             ) : (
-              tickets.map((t) => {
+              tickets.map((t, idx) => {
                 const prefix = t.ticketCode?.substring(0, 2);
                 const rest = t.ticketCode?.substring(2);
                 const priorityClass = `badge-priority-${(t.priority || 'medium').toLowerCase()}`;
                 const statusClass = `badge-status-${(t.status || 'open').toLowerCase().replace(/\s+/g, '')}`;
+                const seqNumber = t.sequenceIndex != null ? t.sequenceIndex + 1 : (page - 1) * limit + idx + 1;
 
                 return (
                   <tr key={t.ticketCode || t._id}>
                     <td className="mono" style={{ color: 'var(--text-muted)' }}>
-                      #{t.sequenceIndex != null ? t.sequenceIndex : '-'}
+                      #{seqNumber}
                     </td>
                     <td>
                       <span className="code-badge mono">
